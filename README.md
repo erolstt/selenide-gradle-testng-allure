@@ -1,0 +1,1 @@
+# selenide-gradle-testng-allure
