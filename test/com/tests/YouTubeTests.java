@@ -1,28 +1,27 @@
 package com.tests;
 
-import com.codeborne.selenide.Screenshots;
-import com.google.common.io.Files;
 import com.pages.HomePage;
 import com.pages.SearchResultsPage;
 import com.pages.VideoPage;
-import org.testng.annotations.AfterTest;
+import com.utils.ListenerClass;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import ru.yandex.qatools.allure.annotations.*;
 import ru.yandex.qatools.allure.model.SeverityLevel;
 
-import java.io.File;
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
 
 
 /**
  * Created by erol on 13.2.2016.
  */
 
+@Listeners({ ListenerClass.class })
 public class YouTubeTests {
 
     @Title("Erol Selitektay YouTube Demo")
@@ -38,32 +37,72 @@ public class YouTubeTests {
         HomePage homePage = open("https://www.youtube.com/", HomePage.class);
         SearchResultsPage resultsPage = homePage.searchFor("chessnetwork checkmated");
         saveTextLog("User name : ", resultsPage.getUserName());
+        resultsPage.userName().shouldHave(text("ChessNetwork"));
+        String FirstSearchResultTitle = resultsPage.getFirstVideoTitle();
+        resultsPage.clickFirstResult();
+        VideoPage videoPage = resultsPage.clickFirstResult();
+        videoPage.videoTitle().shouldHave(text(FirstSearchResultTitle));
+
+    }
+
+
+    @Title("Wrong assertion")
+    @Features("Search users and videos")
+    @Description("Some description")
+    @Severity(SeverityLevel.BLOCKER)
+    @Step("This is going to Fail!")
+    @Issue("FB-1907")
+    @TestCaseId("TMS-123")
+    @Stories("I would like to search some educational videos on YouTube")
+    @Test
+    public void searchFailTest() throws IOException {
+        HomePage homePage = open("https://www.youtube.com/", HomePage.class);
+        SearchResultsPage resultsPage = homePage.searchFor("chessnetwork checkmated");
+        saveTextLog("User name : ", resultsPage.getUserName());
         resultsPage.userName().shouldHave(text("Erol"));
         String FirstSearchResultTitle = resultsPage.getFirstVideoTitle();
         resultsPage.clickFirstResult();
         VideoPage videoPage = resultsPage.clickFirstResult();
         videoPage.videoTitle().shouldHave(text(FirstSearchResultTitle));
 
-        sleep(5000);
     }
 
-    @AfterTest
-    public void tearDown() throws IOException{
-        saveTextLog("User name : ", "After Testin icinde screenshot dan once");
-        screenshot();
-        System.out.println("after test run");
+    @Title("Checking Search Result")
+    @Features("Search user")
+    @Description("Some description")
+    @Severity(SeverityLevel.CRITICAL)
+    @Issue("FB-1907")
+    @TestCaseId("TMS-123")
+    @Stories("I would like to search users on youtube")
+    @Test
+    public void searchPassTest() throws IOException {
+        HomePage homePage = open("https://www.youtube.com/", HomePage.class);
+        SearchResultsPage resultsPage = homePage.searchFor("chessnetwork checkmated");
+        saveTextLog("User name : ", resultsPage.getUserName());
+        resultsPage.userName().shouldHave(text("ChessNetwork"));
+
+    }
+
+    @Test(enabled = false)
+    public void notReadyTest() throws IOException {
+        HomePage homePage = open("https://www.youtube.com/", HomePage.class);
+        SearchResultsPage resultsPage = homePage.searchFor("chessnetwork checkmated");
+        saveTextLog("User name : ", resultsPage.getUserName());
+        resultsPage.userName().shouldHave(text("Erol"));
+        String FirstSearchResultTitle = resultsPage.getFirstVideoTitle();
+        resultsPage.clickFirstResult();
+        VideoPage videoPage = resultsPage.clickFirstResult();
+        videoPage.videoTitle().shouldHave(text(FirstSearchResultTitle));
+
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void tearDown(ITestResult testResult) throws IOException{
     }
 
     @Attachment(value = "Text", type = "text/plain")
     public static String saveTextLog(String attachName, String message) {
         return message;
     }
-
-    @Attachment(type = "image/png")
-    public byte[] screenshot() throws IOException {
-        File screenshot = Screenshots.getLastScreenshot();
-        return Files.toByteArray(screenshot);
-    }
-
 
 }
