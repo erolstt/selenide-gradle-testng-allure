@@ -1,5 +1,5 @@
 # Selenide Allure Example
-This example demonstrates how to use Allure [TestNG](http://testng.org/) adapter with [Gradle](http://www.gradle.org/) build tool.
+This example demonstrates how to use Selenide with Allure
 
 ## Usage
 To launch this example install Gradle and run the following command from the root directory:
