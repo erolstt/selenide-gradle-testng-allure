@@ -1,7 +1,9 @@
-# YouTubeDemo
-UI Automation framework : Selenide
+# Selenide Allure Example
+This example demonstrates how to use Allure [TestNG](http://testng.org/) adapter with [Gradle](http://www.gradle.org/) build tool.
 
-Build tool : Gradle
-
-Test framework : TestNG
-
+## Usage
+To launch this example install Gradle and run the following command from the root directory:
+```bash
+$ gradle
+```
+You should see failed tests and generated Allure XML files in **build/allure-results** directory.
