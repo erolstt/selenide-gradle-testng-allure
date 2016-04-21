@@ -21,3 +21,7 @@ Open report example:
 # Run from the root directory
 $ allure report open
 ```
+To Run a Single Test
+```bash
+gradle test --tests *YouTubeTests.searchTest
+```
