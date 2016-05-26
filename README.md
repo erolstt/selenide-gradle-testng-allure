@@ -32,3 +32,4 @@ To Run a Single Test
 ```bash
 gradle test --tests *YouTubeTests.searchTest
 ```
+[![forthebadge](http://forthebadge.com/images/badges/just-plain-nasty.svg)](http://forthebadge.com)
